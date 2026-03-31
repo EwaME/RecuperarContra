@@ -39,7 +39,7 @@ export default function NuevaPassword() {
             setMensaje('¡Contraseña actualizada con éxito!');
             
             setTimeout(() => {
-                navigate('/login');
+                navigate('/http://localhost:5173/login');
             }, 3000);
             
         } catch (err) {
