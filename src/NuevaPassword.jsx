@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom'; // Quitamos useNavigate porque ya no lo ocupamos aquí
 import { confirmPasswordReset } from "firebase/auth";
 import { auth } from "./firebase/firebase"; 
 import { Eye, EyeOff } from 'lucide-react'; 
@@ -13,7 +13,6 @@ export default function NuevaPassword() {
     
     const [showPassword, setShowPassword] = useState(false);
     
-    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const oobCode = searchParams.get('oobCode'); 
 
@@ -39,7 +38,11 @@ export default function NuevaPassword() {
             setMensaje('¡Contraseña actualizada con éxito!');
             
             setTimeout(() => {
-                navigate('/http://localhost:5173/login');
+                // ==============================================================
+                // SOLUCIÓN: Usar window.location.href para ir a un proyecto externo
+                // Cambia esta URL por la URL real de tu proyecto cuando lo subas a producción
+                // ==============================================================
+                window.location.href = 'http://localhost:5173/login'; 
             }, 3000);
             
         } catch (err) {
