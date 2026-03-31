@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css';
-import RecuperarPassword from './RecuperarPassword.jsx';
 import NuevaPassword from './NuevaPassword.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -11,7 +10,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<NuevaPassword />} />
         
-        <Route path="/login" element={
+        <Route path="http://localhost:5173/login" element={
           <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC]">
             <p className="font-bold text-gray-500 uppercase tracking-widest">Login</p>
           </div>
