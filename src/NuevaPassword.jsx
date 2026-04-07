@@ -3,7 +3,6 @@ import { useSearchParams } from 'react-router-dom';
 import { confirmPasswordReset } from "firebase/auth";
 import { auth } from "./firebase/firebase"; 
 import { Eye, EyeOff } from 'lucide-react'; 
-// ¡ELIMINAMOS EL IMPORT DE LA IMAGEN DE AQUÍ!
 
 export default function NuevaPassword() {
     const [nuevaPassword, setNuevaPassword] = useState('');
@@ -84,8 +83,7 @@ export default function NuevaPassword() {
             `}</style>
 
             <div className="w-40 h-40 bg-purple-100 rounded-full flex items-center justify-center -mb-8 relative z-10 shadow-sm border-4 border-white">
-                {/* AQUI ESTÁ LA MAGIA: Llamamos la imagen directamente desde la raíz */}
-                <img src="/RecuperarContra.png" alt="Recuperar" className="w-40 h-auto -mb-8 relative z-10" />
+                <img src="/IMGRecuperar.png" alt="Recuperar" className="w-40 h-auto -mb-8 relative z-10" />            
             </div>
 
             <div className="bg-white rounded-[1.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 w-full max-w-md p-8 md:p-10 relative z-0 text-center">
@@ -137,6 +135,7 @@ export default function NuevaPassword() {
                         </div>
                     </div>
 
+                    {/* --- UI DEL MEDIDOR DE FORTALEZA --- */}
                     <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
                         <div className="flex items-center justify-between mb-2">
                             <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Fortaleza</span>
@@ -151,6 +150,7 @@ export default function NuevaPassword() {
                             Debe contener al menos 12 caracteres, 1 mayúscula, 1 número y 1 símbolo especial.
                         </p>
                     </div>
+                    {/* ----------------------------------- */}
 
                     <button 
                         type="submit" 
