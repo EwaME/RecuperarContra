@@ -83,7 +83,7 @@ export default function NuevaPassword() {
             `}</style>
 
             <div className="w-40 h-40 bg-purple-100 rounded-full flex items-center justify-center -mb-8 relative z-10 shadow-sm border-4 border-white">
-                <img src="/IMGRecuperar.png" alt="Recuperar" className="w-40 h-auto -mb-8 relative z-10" />            
+                <img src="/RecuperarIcono.png" alt="Recuperar" className="w-40 h-auto -mb-8 relative z-10" />            
             </div>
 
             <div className="bg-white rounded-[1.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 w-full max-w-md p-8 md:p-10 relative z-0 text-center">
