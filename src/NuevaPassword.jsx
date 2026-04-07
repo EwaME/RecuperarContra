@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useSearchParams } from 'react-router-dom'; // Quitamos useNavigate porque ya no lo ocupamos aquí
+import { useSearchParams } from 'react-router-dom'; 
 import { confirmPasswordReset } from "firebase/auth";
 import { auth } from "./firebase/firebase"; 
 import { Eye, EyeOff } from 'lucide-react'; 
-import spiderkey from './assets/spiderkey.png';
+// ¡ELIMINAMOS EL IMPORT DE LA IMAGEN DE AQUÍ!
 
 export default function NuevaPassword() {
     const [nuevaPassword, setNuevaPassword] = useState('');
@@ -16,6 +16,26 @@ export default function NuevaPassword() {
     const [searchParams] = useSearchParams();
     const oobCode = searchParams.get('oobCode'); 
 
+    const calcularFortaleza = (pwd) => {
+        let score = 0;
+        if (pwd.length >= 12) score += 1;
+        if (/[A-Z]/.test(pwd)) score += 1;
+        if (/[0-9]/.test(pwd)) score += 1;
+        if (/[^A-Za-z0-9]/.test(pwd)) score += 1;
+        return score;
+    };
+
+    const getFortalezaUI = (score) => {
+        if (nuevaPassword.length === 0) return { texto: "Sin ingresar", bg: "bg-gray-200", color: "text-gray-400" };
+        if (score <= 1) return { texto: "Débil", bg: "bg-red-500", color: "text-red-500" };
+        if (score === 2) return { texto: "Regular", bg: "bg-amber-500", color: "text-amber-500" };
+        if (score === 3) return { texto: "Buena", bg: "bg-emerald-400", color: "text-emerald-500" };
+        return { texto: "Fuerte", bg: "bg-emerald-600", color: "text-emerald-600" };
+    };
+
+    const scorePwd = calcularFortaleza(nuevaPassword);
+    const uiFortaleza = getFortalezaUI(scorePwd);
+
     const handleCambiarPassword = async (e) => {
         e.preventDefault();
         setError('');
@@ -26,8 +46,8 @@ export default function NuevaPassword() {
             return;
         }
 
-        if (nuevaPassword.length < 6) {
-            setError('La contraseña debe tener al menos 6 caracteres.');
+        if (scorePwd < 4) {
+            setError('La contraseña no cumple con los requisitos de seguridad.');
             return;
         }
 
@@ -38,11 +58,7 @@ export default function NuevaPassword() {
             setMensaje('¡Contraseña actualizada con éxito!');
             
             setTimeout(() => {
-                // ==============================================================
-                // SOLUCIÓN: Usar window.location.href para ir a un proyecto externo
-                // Cambia esta URL por la URL real de tu proyecto cuando lo subas a producción
-                // ==============================================================
-                window.location.href = 'http://localhost:5173/login'; 
+                window.location.href = 'https://comisariato-plataform.web.app/login'; 
             }, 3000);
             
         } catch (err) {
@@ -67,8 +83,9 @@ export default function NuevaPassword() {
                 }
             `}</style>
 
-            <div className="w-32 h-32 bg-purple-100 rounded-full flex items-center justify-center -mb-8 relative z-10 shadow-sm border-4 border-white">
-                <img src={spiderkey} alt="Recuperar" className="w-40 h-auto -mb-8 relative z-10" />
+            <div className="w-40 h-40 bg-purple-100 rounded-full flex items-center justify-center -mb-8 relative z-10 shadow-sm border-4 border-white">
+                {/* AQUI ESTÁ LA MAGIA: Llamamos la imagen directamente desde la raíz */}
+                <img src="/RecuperarContra.png" alt="Recuperar" className="w-40 h-auto -mb-8 relative z-10" />
             </div>
 
             <div className="bg-white rounded-[1.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 w-full max-w-md p-8 md:p-10 relative z-0 text-center">
@@ -120,11 +137,26 @@ export default function NuevaPassword() {
                         </div>
                     </div>
 
+                    <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                        <div className="flex items-center justify-between mb-2">
+                            <span className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Fortaleza</span>
+                            <span className={`text-[10px] font-bold uppercase tracking-wider ${uiFortaleza.color}`}>{uiFortaleza.texto}</span>
+                        </div>
+                        <div className="flex gap-1.5 h-1.5 w-full">
+                            {[1, 2, 3, 4].map((level) => (
+                                <div key={level} className={`flex-1 rounded-full transition-colors duration-300 ${scorePwd >= level ? uiFortaleza.bg : 'bg-gray-200'}`}></div>
+                            ))}
+                        </div>
+                        <p className="text-[10px] text-gray-500 mt-3 leading-tight font-medium">
+                            Debe contener al menos 12 caracteres, 1 mayúscula, 1 número y 1 símbolo especial.
+                        </p>
+                    </div>
+
                     <button 
                         type="submit" 
-                        disabled={loading || !oobCode}
+                        disabled={loading || !oobCode || scorePwd < 4}
                         className={`w-full text-white text-[10px] font-bold px-4 py-4 rounded-xl uppercase tracking-widest transition-all
-                            ${loading || !oobCode ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#020817] hover:bg-black shadow-md'}
+                            ${loading || !oobCode || scorePwd < 4 ? 'bg-gray-300 cursor-not-allowed text-gray-500' : 'bg-[#020817] hover:bg-black shadow-md'}
                         `}
                     >
                         {loading ? 'Guardando...' : 'GUARDAR CONTRASEÑA'}

@@ -10,7 +10,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<NuevaPassword />} />
         
-        <Route path="http://localhost:5173/login" element={
+        <Route path="https://comisariato-plataform.web.app/login" element={
           <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC]">
             <p className="font-bold text-gray-500 uppercase tracking-widest">Login</p>
           </div>
